@@ -8,6 +8,7 @@ from PIL import Image
 
 st.set_page_config(layout="wide")
 
+
 # --- Pengaturan Halaman ---
 with st.container():
     col1, col2, col3, col4, col5, col6 = st.columns([0.15, 0.14, 0.15, 0.1, 0.2, 2])
@@ -46,17 +47,9 @@ with st.container():
             st.image(image_sig, width=300)
         except FileNotFoundError:
             st.warning("File gambar 'sig_bg.png' tidak ditemukan.")
-    
-  
-  
-
+            
 st.title("Dashboard Analisis Reliabilitas Mesin")
-st.markdown("### Kerja Praktik PT.Semen Indonesia (Persero) Tbk. Pabrik Tuban")
-st.markdown("---")
-
-# Menambahkan deskripsi di bawah judul
-st.markdown("## **Nama Mahasiswa** : \n1. Muhammad Rifqy Rezvany Anwar (5003221022) \n 2. Muhammad Fairuz Zaqi (5003221068)")
-st.markdown("## **Pembimbing** : \n1. Diaz Fitra Aksioma, S.Si, M.Si (Dosen Pembimbing 1) \n 2. Prof. Dr. Muhammad Mashuri, M.T (Dosen Pembimbing 2) \n 3. Dwi Agus Arvianto, S.T (Pembimbing Lapangan)")
+st.markdown("Sebuah alat untuk menganalisis keandalan (reliability) dan waktu operasional (uptime) mesin berdasarkan data kerusakan yang diinput.")
 st.markdown("---")
 
 # --- Inisialisasi Session State ---
@@ -67,11 +60,11 @@ if 'data_manual' not in st.session_state:
 tab1, tab2 = st.tabs(["Unggah File", "Input Manual"])
 
 with tab1:
-    st.header("1. Unggah Data Kerusakan dari File")
+    st.header("Input: Unggah Data Kerusakan dari File")
     uploaded_file = st.file_uploader("Pilih file CSV atau Excel", type=["csv", "xlsx"])
 
 with tab2:
-    st.header("2. Input Data Kerusakan Secara Manual")
+    st.header("Input: Masukkan Data Kerusakan Secara Manual")
     with st.form(key='data_form'):
         col1, col2 = st.columns(2)
         with col1:
@@ -111,6 +104,8 @@ with tab2:
         st.success("Data berhasil ditambahkan secara manual!")
 
 # --- Pemilihan Sumber Data ---
+st.markdown("---")
+st.header("Tampilan Data")
 df_final = None
 if uploaded_file:
     try:
@@ -180,13 +175,15 @@ elif not st.session_state.data_manual.empty:
     if df_final.empty:
         st.info("Belum ada data yang dimasukkan.")
 else:
-    st.info("Silakan unggah file atau masukkan data manual untuk memulai analisis.")
+    st.info("Silakan unggah atau input data untuk melihat tampilan data.")
     df_final = None
 
-# --- Bagian Analisis Reliabilitas (hanya jika data cukup) ---
+# --- Bagian Analisis Reliabilitas (Template Tampilan Hasil) ---
+st.markdown("---")
+st.header("Hasil: Analisis Reliabilitas")
+
+
 if df_final is not None and len(df_final) > 1:
-    st.markdown("---")
-    st.header("3. Analisis Reliabilitas")
     
     def calculate_reliability_metrics(data, component_name, dist_name):
         data = data.sort_values(by='waktu_kerusakan', ignore_index=True)
@@ -319,7 +316,19 @@ if df_final is not None and len(df_final) > 1:
             maintenance_table = pd.DataFrame(maintenance_times.items(), columns=['Target Reliabilitas (%)', 'Waktu Maintenance (Jam)'])
             st.dataframe(maintenance_table)
         else:
-            st.warning(f"Data untuk {selected_component} tidak mencukupi untuk perhitungan.")
+            st.info("Diperlukan minimal 3 kejadian kerusakan untuk melakukan analisis. Silakan masukkan data lebih lanjut.")
     else:
         st.info("Diperlukan minimal 3 kejadian kerusakan untuk melakukan analisis distribusi.")
-
+else:
+    # Konten hasil analisis yang akan terlihat jika data belum diunggah
+    st.subheader("MTBF (Mean Time Between Failures)")
+    st.write("Rata-rata waktu berjalannya mesin antar kegagalan.")
+    st.markdown("---")
+    st.subheader("Reliability Sekarang")
+    st.write("Probabilitas bahwa mesin akan beroperasi tanpa gagal pada waktu saat ini.")
+    st.markdown("---")
+    st.subheader("Grafik  Fungsi Reliabilitas")
+    st.write("Grafik yang menunjukkan probabilitas keberhasilan mesin seiring berjalannya waktu.")
+    st.markdown("---")
+    st.subheader("Saran Waktu Maintenance")
+    st.write("Tabel yang berisi rekomendasi jadwal pemeliharaan berdasarkan target reliabilitas.")
