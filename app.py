@@ -47,9 +47,9 @@ with st.container():
             st.image(image_sig, width=300)
         except FileNotFoundError:
             st.warning("File gambar 'sig_bg.png' tidak ditemukan.")
-            
+
 st.title("Dashboard Analisis Reliabilitas Mesin")
-st.markdown("Sebuah alat untuk menganalisis keandalan (reliability) dan waktu operasional (uptime) mesin berdasarkan data kerusakan yang diinput.")
+st.markdown("### Kerja Praktik PT.Semen Indonesia (Persero) Tbk. Pabrik Tuban")
 st.markdown("---")
 
 # --- Inisialisasi Session State ---
