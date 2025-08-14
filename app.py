@@ -70,6 +70,23 @@ with tab1:
     st.header("Input: Unggah Data Kerusakan dari File")
     uploaded_file = st.file_uploader("Pilih file CSV atau Excel", type=["csv", "xlsx"])
 
+ # --- Petunjuk Format Excel ---
+    st.subheader("Petunjuk Format File")
+    st.markdown("Pastikan file Anda memiliki **kolom-kolom** dan **format data** yang sesuai dengan contoh di bawah.")
+    
+    contoh_format_data = {
+        'komponen': ['Sistem A', 'Sistem B', 'Komponen C'],
+        'tanggal_kerusakan': ['2025-08-01', '2025-08-05', '2025-08-10'],
+        'jam_kerusakan': ['10:00:00', '15:30:00', '21:45:00'],
+        'tanggal_sistem_berjalan_kembali': ['2025-08-01', '2025-08-05', '2025-08-10'],
+        'jam_sistem_berjalan_kembali': ['09:00:00', '14:00:00', '20:00:00'],
+        'penyebab_kerusakan': ['Overheating', 'Keausan Bearing', 'Kerusakan Kabel']
+    }
+    
+    contoh_df = pd.DataFrame(contoh_format_data)
+    st.dataframe(contoh_df)
+    st.markdown("---")
+    
 with tab2:
     st.header("Input: Masukkan Data Kerusakan Secara Manual")
     with st.form(key='data_form'):
