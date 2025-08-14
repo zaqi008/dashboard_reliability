@@ -52,6 +52,13 @@ st.title("Dashboard Analisis Reliabilitas Mesin")
 st.markdown("### Kerja Praktik PT.Semen Indonesia (Persero) Tbk. Pabrik Tuban")
 st.markdown("---")
 
+
+# Menambahkan deskripsi di bawah judul
+st.markdown("## **Nama Mahasiswa** : \n1. Muhammad Rifqy Rezvany Anwar (5003221022) \n 2. Muhammad Fairuz Zaqi (5003221068)")
+st.markdown("## **Pembimbing** : \n1. Diaz Fitra Aksioma, S.Si, M.Si (Dosen Pembimbing 1) \n 2. Prof. Dr. Muhammad Mashuri, M.T (Dosen Pembimbing 2) \n 3. Dwi Agus Arvianto, S.T (Pembimbing Lapangan)")
+st.markdown("---")
+
+
 # --- Inisialisasi Session State ---
 if 'data_manual' not in st.session_state:
     st.session_state.data_manual = pd.DataFrame(columns=['komponen', 'waktu_kerusakan', 'waktu_sistem_berjalan_kembali', 'penyebab_kerusakan'])
